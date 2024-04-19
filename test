@@ -1,0 +1,52 @@
+class Position :
+    def __init__(self, x, y) :
+        self.x = x
+        self.y = y
+        
+    def Change_pos_(self, x, y) :
+        self.x = x
+        self.y = y
+
+class Target :
+    def __init__(self, xi, yi, xf, yf, v) :
+        self.init_pos = Position(xi, yi)
+        self.dest = Position(xf, yf)
+        self.c_pos = Position(xi, yi)
+        self.vel = v
+        self.vec = Position(0,0)
+        self.vec.Change_pos_(self.dest.x - self.init_pos.x , self.dest.y - self.init_pos.y)
+        self.R = (self.vec.x**2 + self.vec.y**2)**(1/2)
+        self.vec.Change_pos_(self.vec.x / self.R , self.vec.y / self.R)
+        self.RequiredTime = self.R/self.vel
+        
+
+    def MovePos(self, T) :
+        xn = self.c_pos.x + (self.vel * self.vec.x * T)
+        yn = self.c_pos.y + (self.vel * self.vec.y * T)
+        self.c_pos.Change_pos_(xn, yn)
+        
+    def Dist(self) :
+        return ((self.c_pos.x - self.dest.x)**2 + (self.c_pos.y - self.dest.y)**2)**(1/2)
+      
+        
+      
+
+initpos_x = 0
+initpos_y = 0
+dest_x = 20
+dest_y = 10
+v = 1
+scene = Target(initpos_x, initpos_y, dest_x, dest_y, v)
+print(scene.c_pos.x, scene.c_pos.y)
+print(scene.vec.x, scene.vec.y)
+T = 1
+nT = 1
+while (nT < scene.RequiredTime) :
+    scene.MovePos(T)
+    print("")
+    print("x = " , scene.c_pos.x)
+    print("y = " , scene.c_pos.y)
+    print("t = ", nT)
+    print("")
+    nT += T
+    
